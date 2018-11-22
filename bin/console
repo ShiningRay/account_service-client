@@ -10,5 +10,7 @@ require "account_service/client"
 # require "pry"
 # Pry.start
 
-require "irb"
-IRB.start(__FILE__)
+require "pry"
+# IRB.start(__FILE__)
+opts = Pry::CLI.parse_options
+Pry::CLI.start(opts)

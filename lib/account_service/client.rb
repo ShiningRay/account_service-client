@@ -1,10 +1,43 @@
+# frozen_string_literal: true
+require "base64"
+require "openssl"
 require "account_service/client/version"
+require "typhoeus"
+require "active_support/core_ext/object/blank"
+require "active_support/core_ext/object/to_param"
+require "active_support/json"
 
-module AccountService
+require_relative 'request_helpers'
+
+module BitRabbit::AccountService
   class Client
-    def initialize(key, secret)
+    include RequestHelpers
+    def initialize(key, secret, base_url='https://accounts.bitrabbit.com')
       @key = key
       @secret = secret
+      @base_url = base_url
+    end
+
+    def transfer(sn:, from:, to:, amount:, currency:)
+      transfer_params = {
+        sn: sn,
+        amount: amount,
+        currency: currency
+      }
+
+      if from.is_a?(Numeric)
+        transfer_params[:from_member_id] = from
+      else
+        transfer_params[:from_member] = from
+      end
+
+      if to.is_a?(Numeric)
+        transfer_params[:to_member_id] = to
+      else
+        transfer_params[:to_member] = to
+      end
+
+      post "/api/v1/transfers", transfer_params
     end
   end
 end
