@@ -1,3 +1,5 @@
+require 'oauth2'
+
 module BitRabbit::AccountService
   module OAuth
     class Client < ::OAuth2::AccessToken
@@ -12,6 +14,15 @@ module BitRabbit::AccountService
 
       def me
         get("#{BaseURL}/me").parsed
+      end
+
+      def get_accounts
+        res = get("#{BaseURL}/accounts").parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
       end
     end
   end

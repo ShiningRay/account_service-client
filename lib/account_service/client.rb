@@ -8,6 +8,7 @@ require "active_support/core_ext/object/to_param"
 require "active_support/json"
 
 require_relative 'request_helpers'
+require_relative 'oauth/client'
 
 module BitRabbit::AccountService
   class Client
