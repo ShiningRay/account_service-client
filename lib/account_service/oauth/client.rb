@@ -16,8 +16,19 @@ module BitRabbit::AccountService
         get("#{BaseURL}/me").parsed
       end
 
-      def get_accounts
+      def accounts
         res = get("#{BaseURL}/accounts").parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
+      alias get_accounts accounts
+
+      def two_factors
+        res = get("#{BaseURL}/accounts").parse
         if res['success']
           res['data']
         else
