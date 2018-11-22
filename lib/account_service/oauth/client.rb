@@ -28,7 +28,7 @@ module BitRabbit::AccountService
       alias get_accounts accounts
 
       def two_factors
-        res = get("#{BaseURL}/accounts").parse
+        res = get("#{BaseURL}/two_factors").parsed
         if res['success']
           res['data']
         else
