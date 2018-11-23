@@ -4,12 +4,23 @@ module BitRabbit::AccountService
   module OAuth
     class Client < ::OAuth2::AccessToken
       BaseURL = '/oauth/v1'
-      def transfer(currency:, to:, amount:)
-        post("#{BaseURL}/transfers", body: {
-                  currency: currency,
-                  to: to,
-                  amount: amount
-                }).parsed
+      def transfer(sn:, currency:, to:, amount:)
+        body = {
+          sn: sn,
+          currency: currency,
+          amount: amount
+        }
+        if to.is_a?(Numeric)
+          body[:to_member_id] = to
+        else
+          body[:to_member] = to
+        end
+        res = post("#{BaseURL}/transfers", body: body).parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
       end
 
       def me
