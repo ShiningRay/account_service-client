@@ -19,6 +19,19 @@ module BitRabbit::AccountService
       @base_url = base_url
     end
 
+    def currencies
+      get '/api/v1/currencies'
+    end
+
+    def members(ids)
+      get "/api/v1/members/#{ids.join(",")}"
+    end
+
+    def get_member(id)
+      get "/api/v1/members/#{id}"
+    end
+
+
     def transfer(sn:, from:, to:, amount:, currency:)
       transfer_params = {
         sn: sn,

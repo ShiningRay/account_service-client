@@ -29,7 +29,12 @@ module BitRabbit
         )
         res = req.run
         puts res.response_body.to_s
-        ActiveSupport::JSON.decode res.response_body.to_s
+        json = ActiveSupport::JSON.decode res.response_body.to_s
+        if json['success']
+          return json['data']
+        else
+          raise json['errors']
+        end
       end
 
       def post(path, body, query = nil)

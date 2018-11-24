@@ -39,6 +39,16 @@ module BitRabbit::AccountService
 
       alias get_accounts accounts
 
+      def invitees(after:nil)
+        p = {date: after} if after
+        res = get("#{BaseURL}/invitees", p).parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
       def two_factors
         res = get("#{BaseURL}/two_factors").parsed
         if res['success']
