@@ -5,7 +5,7 @@ require "account_service/client/version"
 
 Gem::Specification.new do |spec|
   spec.name = "account_service-client"
-  spec.version = AccountService::Client::VERSION
+  spec.version = BitRabbit::AccountService::Client::VERSION
   spec.authors = ["ShiningRay"]
   spec.email = ["tsowly@hotmail.com"]
 
