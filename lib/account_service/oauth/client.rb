@@ -24,6 +24,21 @@ module BitRabbit::AccountService
         end
       end
 
+      # Refreshes the current Access Token
+      #
+      # @return [AccessToken] a new AccessToken
+      # @note options should be carried over to the new AccessToken
+      def refresh!(params = {})
+        raise('A refresh_token is not available') unless refresh_token
+        params[:grant_type] = 'refresh_token'
+        params[:refresh_token] = refresh_token
+        new_token = @client.get_token(params, {}, self.class)
+        new_token.options = options
+        new_token.refresh_token = refresh_token unless new_token.refresh_token
+
+        new_token
+      end
+
       def me
         get("#{BaseURL}/me").parsed
       end
