@@ -31,6 +31,10 @@ module BitRabbit::AccountService
       get "/api/v1/members/#{id}"
     end
 
+    def get_invitees(member_id:, after:)
+      params = {date: after}
+      get "/api/v1/members/#{member_id}/invitees", params
+    end
 
     def transfer(sn:, from:, to:, amount:, currency:)
       transfer_params = {
