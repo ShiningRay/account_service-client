@@ -20,7 +20,7 @@ module BitRabbit::AccountService
         if res['success']
           res['data']
         else
-          raise res['errors']
+          raise res['errors'].join("\n")
         end
       end
 
