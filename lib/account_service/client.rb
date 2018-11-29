@@ -6,6 +6,7 @@ require "typhoeus"
 require "active_support/core_ext/object/blank"
 require "active_support/core_ext/object/to_param"
 require "active_support/json"
+require 'jwt'
 
 require_relative 'request_helpers'
 require_relative 'oauth/client'
@@ -56,6 +57,16 @@ module BitRabbit::AccountService
       end
 
       post "/api/v1/transfers", transfer_params
+    end
+
+    def checkout_url(opts={})
+      opts.to_options!
+      opts.assert_valid_keys(:order_no, :amount, :currency, :redirect_url)
+      opts = opts.slice(:order_no, :amount, :currency, :redirect_url)
+      opts[:iss] = @key
+      opts[:iat] = Time.now.to_i
+      token = JWT.encode opts, @secret, 'HS256'
+      File.join(@base_url, "/checkout?#{token}")
     end
   end
 end
