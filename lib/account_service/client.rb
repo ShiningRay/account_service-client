@@ -66,7 +66,7 @@ module BitRabbit::AccountService
       opts[:iss] = @key
       opts[:iat] = Time.now.to_i
       token = JWT.encode opts, @secret, 'HS256'
-      File.join(@base_url, "/checkout?#{token}")
+      File.join(@base_url, "/checkout?token=#{token}")
     end
   end
 end
