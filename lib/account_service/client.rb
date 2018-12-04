@@ -59,13 +59,22 @@ module BitRabbit::AccountService
       post "/api/v1/transfers", transfer_params
     end
 
-    def checkout_url(opts={})
+    def checkout_token(opts={})
       opts.to_options!
       opts.assert_valid_keys(:order_no, :amount, :currency, :redirect_url)
       opts = opts.slice(:order_no, :amount, :currency, :redirect_url)
       opts[:iss] = @key
       opts[:iat] = Time.now.to_i
       token = JWT.encode opts, @secret, 'HS256'
+    end
+
+    def decode_token(token)
+      data = JWT.decode(token, @secret, "HS256")
+      data[0]
+    end
+
+    def checkout_url(opts={})
+      token = checkout_token(opts)
       File.join(@base_url, "/checkout?token=#{token}")
     end
   end
