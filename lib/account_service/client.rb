@@ -70,7 +70,9 @@ module BitRabbit::AccountService
 
     def decode_token(token)
       data = JWT.decode(token, @secret, "HS256")
-      data[0]
+      payload = data[0]
+      raise 'App Key Mismatch' if payload['iss'] != @key
+      payload
     end
 
     def checkout_url(opts={})
