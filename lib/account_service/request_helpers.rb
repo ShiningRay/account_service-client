@@ -1,6 +1,19 @@
 module BitRabbit
   module AccountService
     module RequestHelpers
+
+      def build_sig(method, path, body_str, headers)
+        md5 = Digest::MD5.hexdigest(body_str)
+        c = [
+          method.to_s.upcase,
+          path,
+          md5,
+          headers["Content-Type"],
+          headers["Date"],
+        ] * "\n"
+        Base64.strict_encode64(OpenSSL::HMAC.digest("sha1", @secret, c))
+      end
+
       def request(method, path, body = "")
         body_str = body.is_a?(String) ? body : ActiveSupport::JSON.encode(body)
 

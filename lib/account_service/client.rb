@@ -59,6 +59,29 @@ module BitRabbit::AccountService
       post "/api/v1/transfers", transfer_params
     end
 
+    def extract_event(request)
+      if request.headers['Authorization'] =~ /\ABRB (\w+):(.+)\z/
+        key = $1
+        sig = $2
+        headers = {
+          "Content-Type" => "application/json",
+          "Date" => request.headers['Date']
+        }
+
+        date = DateTime.httpdate(request.headers['Date'])
+        raise 'Request Expired' if date < 10.minutes.ago
+
+        body = request.body.read
+
+        if sig != build_sig(request.method, request.original_url, body, headers)
+          raise 'Signature Mismatch'
+        end
+        return ActiveSupport::JSON.decode body
+      else
+        raise 'Missing Authorization Information'
+      end
+    end
+
     def checkout_token(opts={})
       opts.to_options!
       opts.assert_valid_keys(:order_no, :amount, :currency, :redirect_url)
