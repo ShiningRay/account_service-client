@@ -86,6 +86,56 @@ module BitRabbit::AccountService
         res = post("#{BaseURL}/two_factors/verify", body: {two_factor: two_factor_params}).parsed
         res['success']
       end
+
+      def deposits(currency:, label:, page: 1, start: nil, end: nil)
+        params = {currency: currency, label: label, page: page, start: start, end: end}
+        res = get("#{BaseURL}/deposits", params).parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
+      def withdraws(currency:, label:, page: 1, start: nil, end_at: nil)
+        params = {currency: currency, label: label, page: page, start: start, end: end_at}
+        res = get("#{BaseURL}/withdraws", params).parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
+      def send_withdraw(currency:, label:, amount:, address:)
+        payload = {currency: currency, label: label, amount: amount, address: address}
+        res = post("#{BaseURL}/withdraws", params).parsed
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
+      def addresses(currency:)
+        res = get("#{BaseURL}/addresses").parse
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
+
+      def address(currency:, label:)
+        params = {currency: currency}
+
+        res = get("#{BaseURL}/addresses/#{label}", params).parse
+        if res['success']
+          res['data']
+        else
+          raise res['errors']
+        end
+      end
     end
   end
 end
