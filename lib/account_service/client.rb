@@ -102,5 +102,31 @@ module BitRabbit::AccountService
       token = checkout_token(opts)
       File.join(@base_url, "/checkout?token=#{token}")
     end
+
+    def deposits(currency:, label:, page: 1, start_at: nil, end_at: nil)
+      params = {currency: currency, label: label, page: page, start: start_at, end: end_at}
+      res = get("/api/v1/deposits", params)
+    end
+
+    def withdraws(currency:, label:, page: 1, start_at: nil, end_at: nil)
+      params = {currency: currency, label: label, page: page, start: start_at, end: end_at}
+      res = get("/api/v1/withdraws", params)
+    end
+
+    def send_withdraw(currency:, label:, amount:, address:)
+      payload = {currency: currency, label: label, amount: amount, address: address}
+      res = post("/api/v1/withdraws", params)
+    end
+
+    def addresses(currency:)
+      res = get("/api/v1/addresses")
+    end
+
+    def address(currency:, label:)
+      params = {currency: currency}
+
+      res = get("/api/v1/addresses/#{label}", params)
+    end
+
   end
 end
