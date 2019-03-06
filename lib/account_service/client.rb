@@ -119,13 +119,13 @@ module BitRabbit::AccountService
     end
 
     def addresses(currency:)
-      res = get("#{BaseURL}/addresses"
+      res = get("#{BaseURL}/addresses")
     end
 
     def address(currency:, label:)
       params = {currency: currency}
 
-      res = get("#{BaseURL}/addresses/#{label}", params
+      res = get("#{BaseURL}/addresses/#{label}", params)
     end
 
   end
