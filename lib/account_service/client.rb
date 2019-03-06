@@ -105,27 +105,27 @@ module BitRabbit::AccountService
 
     def deposits(currency:, label:, page: 1, start_at: nil, end_at: nil)
       params = {currency: currency, label: label, page: page, start: start_at, end: end_at}
-      res = get("#{BaseURL}/deposits", params)
+      res = get("#{@base_url}/deposits", params)
     end
 
     def withdraws(currency:, label:, page: 1, start_at: nil, end_at: nil)
       params = {currency: currency, label: label, page: page, start: start_at, end: end_at}
-      res = get("#{BaseURL}/withdraws", params)
+      res = get("#{@base_url}/withdraws", params)
     end
 
     def send_withdraw(currency:, label:, amount:, address:)
       payload = {currency: currency, label: label, amount: amount, address: address}
-      res = post("#{BaseURL}/withdraws", params)
+      res = post("#{@base_url}/withdraws", params)
     end
 
     def addresses(currency:)
-      res = get("#{BaseURL}/addresses")
+      res = get("#{@base_url}/addresses")
     end
 
     def address(currency:, label:)
       params = {currency: currency}
 
-      res = get("#{BaseURL}/addresses/#{label}", params)
+      res = get("#{@base_url}/addresses/#{label}", params)
     end
 
   end
