@@ -115,11 +115,12 @@ module BitRabbit::AccountService
 
     def send_withdraw(currency:, label:, amount:, address:)
       payload = {currency: currency, label: label, amount: amount, address: address}
-      res = post("/api/v1/withdraws", params)
+      res = post("/api/v1/withdraws", payload)
     end
 
     def addresses(currency:)
-      res = get("/api/v1/addresses")
+      params = {currency: currency}
+      res = get("/api/v1/addresses", params)
     end
 
     def address(currency:, label:)
