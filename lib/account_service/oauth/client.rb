@@ -87,8 +87,8 @@ module BitRabbit::AccountService
         res['success']
       end
 
-      def deposits(currency:, label:, page: 1, start: nil, end: nil)
-        params = {currency: currency, label: label, page: page, start: start, end: end}
+      def deposits(currency:, label:, page: 1, start: nil, end_at: nil)
+        params = {currency: currency, label: label, page: page, start: start, end: end_at}
         res = get("#{BaseURL}/deposits", params).parsed
         if res['success']
           res['data']
