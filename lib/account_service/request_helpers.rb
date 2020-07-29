@@ -49,7 +49,8 @@ module BitRabbit
         req = Typhoeus::Request.new(
           File.join(@base_url, path), method: method,
                                       body: body_str,
-                                      headers: headers
+                                      headers: headers,
+                                      timeout: @timeout || 60
         )
         res = req.run
         puts res.response_body.to_s
