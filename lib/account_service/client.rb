@@ -75,9 +75,9 @@ module BitRabbit::AccountService
       res = post('/api/v1/withdraws', payload)
     end
 
-    def addresses(currency:)
+    def addresses(currency:, label:)
       params = { currency: currency }
-      res = get('/api/v1/addresses', params)
+      res = get("/api/v1/addresses/#{label}", params)
     end
 
     def extract_event(request)
